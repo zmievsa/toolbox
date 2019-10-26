@@ -1,5 +1,4 @@
 function clicker() {
-    // Automatically does the boring portion of my homework in CS course
     const list_observer_config = {childList: true};
     const step_observer_config = {attributes: true}
     function main() {
