@@ -1,0 +1,38 @@
+#!/bin/sh
+
+# Accepts a program as a first cli arg. Then configures pkexec to run this program
+# in the future. (allows us to run GUI programs as root)
+
+# You should do it before you want to run some GUI program as root
+
+if [[ $EUID -ne 0 ]]; then
+   echo "This script must be run as root" 
+   exit 1
+fi
+if [ $# -eq 0 ]
+  then
+    echo "No arguments supplied"
+    exit 1
+fi
+command -v $1 >/dev/null 2>&1 || {
+    echo >&2 "Command $1 not found"; exit 1;
+}
+
+echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?>
+<!DOCTYPE policyconfig PUBLIC
+ \"-//freedesktop//DTD PolicyKit Policy Configuration 1.0//EN\"
+ \"http://www.freedesktop.org/standards/PolicyKit/1/policyconfig.dtd\">
+<policyconfig>
+    <action id=\"org.freedesktop.policykit.pkexec.$1\">
+    <description>Run $1</description>
+    <message>Authentication is required to run this program</message>
+    <defaults>
+        <allow_any>auth_admin</allow_any>
+        <allow_inactive>auth_admin</allow_inactive>
+        <allow_active>auth_admin</allow_active>
+    </defaults>
+    <annotate key=\"org.freedesktop.policykit.exec.path\">/usr/bin/$1</annotate>
+    <annotate key=\"org.freedesktop.policykit.exec.allow_gui\">true</annotate>
+    </action>
+</policyconfig>
+" > "/usr/share/polkit-1/actions/org.freedesktop.policykit.$1.policy"
