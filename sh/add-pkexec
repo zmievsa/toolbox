@@ -36,3 +36,4 @@ echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?>
     </action>
 </policyconfig>
 " > "/usr/share/polkit-1/actions/org.freedesktop.policykit.$1.policy"
+echo "Now you can run this program from GUI using 'pkexec $1'"
