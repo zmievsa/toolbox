@@ -1,10 +1,10 @@
-#!/bin/bash
+#!/bin/sh
 set -e
 if [ "$EUID" -eq 0 ]
   then echo "Please, do not run me as root."
   exit 1
 fi
-if [ $# < 2 ]
+if [ $# -lt 2 ]
   then
     echo "Not enough arguments supplied. You must supply a path to directory that contains your app and then a DNS name for your service"
     echo "If you want an example of such a name, look at https://github.com/Ovsyanka83/unischeduler_web/blob/master/deploy.sh"
@@ -14,7 +14,7 @@ PROJDIR=$(basename $1)
 PROJDIRPATH=$(realpath $1)
 
 sudo apt update
-sudo apt install nginx python3 python3-pip python3-dev ufw git
+sudo apt install nginx python3 python3-pip python3-dev ufw git certbot python-certbot-nginx
 # Configure firewall
 sudo ufw allow OpenSSH
 sudo ufw allow 'Nginx Full'
@@ -71,7 +71,6 @@ server {
 sudo ln -s /etc/nginx/sites-available/$PROJDIR /etc/nginx/sites-enabled
 sudo rm /etc/nginx/sites-enabled/default
 
-sudo apt-get install certbot python-certbot-nginx
 sudo certbot --nginx
 
 sudo systemctl start $PROJDIR
