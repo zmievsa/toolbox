@@ -77,4 +77,4 @@ sudo systemctl start $PROJDIR
 sudo systemctl enable $PROJDIR
 sudo systemctl restart nginx
 
-echo "alias restart-server=\"sudo systemctl restart $PROJDIR\"\n" >> ~/.bashrc
+echo "alias restart-server=\"sudo systemctl restart $PROJDIR\"" >> ~/.bashrc
