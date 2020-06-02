@@ -78,3 +78,4 @@ sudo systemctl enable $PROJDIR
 sudo systemctl restart nginx
 
 echo "alias restart-server=\"sudo systemctl restart $PROJDIR\"" >> ~/.bashrc
+echo "You can use restart-server command to push updates"
