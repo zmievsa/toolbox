@@ -1,3 +1,7 @@
+#!/bin/bash
+
+# Put me into ~/
+
 alias pf="ps -e | grep $1"
 alias clip="xclip -selection clipboard"
 
