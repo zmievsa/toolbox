@@ -1,0 +1,15 @@
+#!/bin/bash
+
+alias update-mirrors="sudo pacman-mirrors --fasttrack && sudo pacman -Syyu"
+alias clean-cache="sudo pacman -Scc"
+alias update="sudo pacman -Syyu"
+alias clip="xclip -selection clipboard"
+alias vpnc="expressvpn connect"
+alias vpnd="expressvpn disconnect"
+alias vpns="expressvpn status"
+printf "You can use: \n"
+printf "\tclip -> copy stdin into clipboard\n"
+printf "\tupdate -> update packages\n"
+printf "\tupdate-mirrors -> update mirrorlist for fastest mirrors. Do it when you change countries\n"
+printf "\tadd-pkexec -> Configure a GUI application to be run as root when used with pkexec\n"
+printf "\tpamac build <aur-package> -> Install a package from aur\n"
