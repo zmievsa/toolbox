@@ -12,6 +12,7 @@ if [ $# -lt 2 ]
 fi
 PROJDIR=$(basename $1)
 PROJDIRPATH=$(realpath $1)
+DNSNAME=$2
 
 sudo apt update
 sudo apt install nginx python3 python3-pip python3-dev ufw git certbot python-certbot-nginx
@@ -50,9 +51,9 @@ echo "server {
     listen 443 ssl;
     listen [::]:443 ssl;
     # Use these two lines if you accidentally lose your configuration
-    # ssl_certificate /etc/letsencrypt/live/$2/fullchain.pem;
-    # ssl_certificate_key /etc/letsencrypt/live/$2/privkey.pem;
-    server_name $2;
+    # ssl_certificate /etc/letsencrypt/live/$DNSNAME/fullchain.pem;
+    # ssl_certificate_key /etc/letsencrypt/live/$DNSNAME/privkey.pem;
+    server_name $DNSNAME;
 
     location / {
         include proxy_params;
@@ -64,7 +65,7 @@ server {
     listen 80;
     listen [::]:80;
 
-    server_name $2;
+    server_name $DNSNAME;
 
     return 302 https://$server_name$request_uri;
 }" | sudo tee /etc/nginx/sites-available/$PROJDIR # Nginx will catch all requests and forward them to $PROJDIR
