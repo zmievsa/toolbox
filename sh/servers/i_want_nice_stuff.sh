@@ -8,4 +8,4 @@ dpkg -i bat-musl_0.20.0_amd64.deb
 
 apt-get install exa --yes
 
-printf '\nalias df="duf"\nalias ls="exa"\nalias cat="bat"\n' >> ~/.bashrc
+printf '\nalias df="duf"\nalias ls="exa"\nalias ll="exa --git -hal"\nalias cat="bat"\n' >> ~/.bashrc
