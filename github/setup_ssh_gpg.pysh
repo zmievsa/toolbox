@@ -1,0 +1,14 @@
+#!/usr/bin/env pysh
+# !ssh-keygen -t ed25519
+ssh_key = !!cat ~/.ssh/id_ed25519.pub
+
+
+print("Use an RSA key of 4096 bits")
+# !gpg --full-generate-key
+gpg_key_name = input("Enter the GPG key displayed by the previous command: ")
+gpg_key = !!gpg --armor --export {gpg_key_name}
+
+print(f"SSH KEY:\n{ssh_key}\n\nGPG KEY:\n{gpg_key}\n\nAdd them here: https://github.com/settings/keys")
+if typer.confirm("Would you like to globally enable gpg signing in git?"):
+    !git config --global user.signingkey {gpg_key_name}
+    !git config --global commit.gpgsign true
