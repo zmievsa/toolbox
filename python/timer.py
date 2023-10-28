@@ -10,12 +10,13 @@
 # >>> Your_main_timer_result sum_of_your_subtimer_results
 
 
-from time import time
 import gc
+from time import time
 
 
 class Timer:
-    """ A thread/process unsafe timer for easy timing of code execution """
+    """A thread/process unsafe timer for easy timing of code execution"""
+
     def __init__(self, handler=None, turn_off_gc=False):
         self.start = 0
         self.end = 0
@@ -25,7 +26,7 @@ class Timer:
 
     def __enter__(self):
         self.start = time()
-        if (self.turn_off_gc):
+        if self.turn_off_gc:
             self.gc_was_enabled = gc.isenabled()
             gc.disable()
         return self
@@ -41,12 +42,11 @@ class Timer:
                 self.handler(self.result)
         if self.turn_off_gc and self.gc_was_enabled:
             gc.enable()
-    
+
     def _calculate_expected_result(self):
-        return sum([t.result for t in self.subtimers])
-    
+        return sum(t.result for t in self.subtimers)
+
     def make_subtimer(self, *args, **kwargs):
         timer = type(self)(*args, **kwargs)
         self.subtimers.append(timer)
         return timer
-

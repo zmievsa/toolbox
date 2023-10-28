@@ -1,6 +1,6 @@
-from typing import Callable, Generator, List, Optional, Tuple, Union
-from pathlib import Path
 import os
+from pathlib import Path
+from typing import Callable, Generator, List, Optional, Tuple, Union
 
 
 def pathwalk(
