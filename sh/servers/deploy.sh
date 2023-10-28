@@ -21,16 +21,16 @@ sudo ufw allow OpenSSH
 sudo ufw allow 'Nginx Full'
 sudo ufw enable
 
-pip3 install pipenv
+curl -sSL https://install.python-poetry.org | python3 -
 # To use python packages from console
 # (Source .bashrc won't work in a script)
 echo "PYTHON_BIN_PATH='$(python3 -m site --user-base)/bin'
 PATH='$PATH:$PYTHON_BIN_PATH'" >> ~/.bashrc 
 
 cd $PROJDIRPATH
-mkdir .venv # Sets pipenv to put everything in .venv
 echo "If an error happens now, it means you have some problems with your project. Check if it runs by itself"
-python3 -m pipenv install -e . # install from setup.py
+poetry install
+POETRYENVPATH=$(poetry env info -p)
 cd ..
 echo "Now we will add all the necessary configurations"
 # gunicorn --preload means that we load our app before launching workers. This makes workers share multiprocessing locks
@@ -42,8 +42,8 @@ After=network.target
 User=$USER
 Group=www-data
 WorkingDirectory=$PROJDIRPATH
-Environment="PATH=$PROJDIRPATH/.venv/bin"
-ExecStart=$PROJDIRPATH/.venv/bin/gunicorn --preload --workers 3 --bind unix:$PROJDIR.sock -m 007 wsgi:app
+Environment="PATH=$POETRYENVPATH/bin"
+ExecStart=$POETRYENVPATH/bin/gunicorn --preload --workers 3 --bind unix:$PROJDIR.sock -m 007 wsgi:app
 
 [Install]
 WantedBy=multi-user.target" | sudo tee /etc/systemd/system/$PROJDIR.service # Create service to run app on startup
